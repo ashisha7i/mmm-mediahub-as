@@ -1,0 +1,51 @@
+# Design Diagram
+
+```mermaid
+flowchart TD
+ subgraph Java_App["<span style='color:rgb(0, 102, 255); font-weight: bold; font-size: 1.2em;'> ☕ Java App<br>(Spring Boot)</span>"]
+        Java_Scheduler["Scheduler Quartz 🕙"]
+        Java_Orchestrator["Job Orchestrator "]
+        Java_API_Clients["API Clients<br>CM360, Google, Meta, TikTok ..."]
+        Java_Auth_Handlers["Auth Handlers<br>OAuth2/Basic/etc."]
+        Java_REST_AP_Job_Control["REST API Job Control"]
+  end
+ 
+ subgraph Azure_Cloud["<span style='color:rgb(0, 102, 255); font-weight: bold; font-size: 1.2em;'>Azure Cloud</span>"]
+        Azure_App_Service["Azure App Service Web App"]
+        Azure_SQL_Server["<b>Azure SQL Server</b><br><ul><li>- Control Table</li><li>- Data Tables for Partners</li></ul>"]
+        Azure_KeyVault["Azure Key Vault"]
+  end
+
+  subgraph External_APIs["<span style='color:rgb(0, 0, 0); font-weight: bold; font-size: 1.2em;'>External APIs</span>"]
+        EAPI_CM360["CM360"]
+        EAPI_GOOGLE["Google Ads"]
+        EAPI_META["Meta"]
+        EAPI_MISC["..."]
+  end
+
+ subgraph UI["<span style='color:rgb(0, 102, 255); font-weight: bold; font-size: 1.2em;'>📊 UI Dashboard (HTML/React)</span>"]
+        C1["Job List Table"]
+        C2["Status Indicators"]
+        C3["Retry Failed"]
+  end
+
+  Azure_App_Service -- Runs --> Java_App
+  Java_Scheduler -- Triggers --> Java_Orchestrator
+  Java_Orchestrator -- Calls --> Java_API_Clients
+  Java_API_Clients <-- Uses --> Java_Auth_Handlers
+  Java_Orchestrator -- Logs/Reads Statuses --> Azure_SQL_Server
+  Java_REST_AP_Job_Control -- Exposes --> UI
+  UI -- API Calls --> Java_REST_AP_Job_Control
+  Java_API_Clients -- Fetches Secrets --> Azure_KeyVault
+  Java_Orchestrator -- Stores Fetch Results/State --> Azure_SQL_Server
+  C3 -- Triggers Manual Retry --> Java_REST_AP_Job_Control
+  Java_App -- Deploys to --> Azure_App_Service
+  n1["Azure SQL Server"] --> Azure_SQL_Server
+  Java_API_Clients <-- API Calls --> External_APIs
+
+style Azure_Cloud stroke:lightblue,stroke-width:3px,fill:azure
+style Java_App stroke:lightblue,stroke-width:3px,fill:#cceeff
+style UI stroke:lightblue,stroke-width:3px,fill:#ffffe6
+style External_APIs stroke:lightblue,stroke-width:3px,fill:#ffccdd
+```
+
