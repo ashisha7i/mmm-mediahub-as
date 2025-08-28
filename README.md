@@ -51,7 +51,7 @@ style UI stroke:lightblue,stroke-width:3px,fill:#ffffe6
 style External_APIs stroke:lightblue,stroke-width:3px,fill:#ffccdd
 
 %% Optional: make subgraph titles stand out
-classDef header fill=lightblue,stroke=lightblue,color=black,font-weight:bold;
+classDef header fill:lightblue,stroke:lightblue,color:black,font-weight:bold;
 
 ```
 
