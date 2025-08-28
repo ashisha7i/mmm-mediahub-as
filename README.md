@@ -1,29 +1,30 @@
 # Design Diagram
 
 ```mermaid
+%% no config block (GitHub ignores it anyway)
 flowchart TD
- subgraph Java_App["<span style='color:rgb(0, 102, 255); font-weight: bold; font-size: 1.2em;'> ☕ Java App<br>(Spring Boot)</span>"]
+ subgraph Java_App["☕ Java App\n(Spring Boot)"]
         Java_Scheduler["Scheduler Quartz 🕙"]
-        Java_Orchestrator["Job Orchestrator "]
-        Java_API_Clients["API Clients<br>CM360, Google, Meta, TikTok ..."]
-        Java_Auth_Handlers["Auth Handlers<br>OAuth2/Basic/etc."]
+        Java_Orchestrator["Job Orchestrator"]
+        Java_API_Clients["API Clients\nCM360, Google, Meta, TikTok ..."]
+        Java_Auth_Handlers["Auth Handlers\nOAuth2 / Basic / etc."]
         Java_REST_AP_Job_Control["REST API Job Control"]
   end
  
- subgraph Azure_Cloud["<span style='color:rgb(0, 102, 255); font-weight: bold; font-size: 1.2em;'>Azure Cloud</span>"]
+ subgraph Azure_Cloud["Azure Cloud"]
         Azure_App_Service["Azure App Service Web App"]
-        Azure_SQL_Server["<b>Azure SQL Server</b><br><ul><li>- Control Table</li><li>- Data Tables for Partners</li></ul>"]
+        Azure_SQL_Server["Azure SQL Server\n- Control Table\n- Data Tables for Partners"]
         Azure_KeyVault["Azure Key Vault"]
   end
 
-  subgraph External_APIs["<span style='color:rgb(0, 0, 0); font-weight: bold; font-size: 1.2em;'>External APIs</span>"]
+ subgraph External_APIs["External APIs"]
         EAPI_CM360["CM360"]
         EAPI_GOOGLE["Google Ads"]
         EAPI_META["Meta"]
         EAPI_MISC["..."]
   end
 
- subgraph UI["<span style='color:rgb(0, 102, 255); font-weight: bold; font-size: 1.2em;'>📊 UI Dashboard (HTML/React)</span>"]
+ subgraph UI["📊 UI Dashboard\n(HTML / React)"]
         C1["Job List Table"]
         C2["Status Indicators"]
         C3["Retry Failed"]
@@ -43,9 +44,14 @@ flowchart TD
   n1["Azure SQL Server"] --> Azure_SQL_Server
   Java_API_Clients <-- API Calls --> External_APIs
 
+%% Styling subgraphs
 style Azure_Cloud stroke:lightblue,stroke-width:3px,fill:azure
 style Java_App stroke:lightblue,stroke-width:3px,fill:#cceeff
 style UI stroke:lightblue,stroke-width:3px,fill:#ffffe6
 style External_APIs stroke:lightblue,stroke-width:3px,fill:#ffccdd
+
+%% Optional: make subgraph titles stand out
+classDef header fill=lightblue,stroke=lightblue,color=black,font-weight:bold;
+
 ```
 
